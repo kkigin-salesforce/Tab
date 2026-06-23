@@ -358,6 +358,95 @@
     color: var(--gray-300); font-size: 14px; top: -1px;
   }
 
+  /* ── Product cards (new cheat sheet layout) ── */
+  .product-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 580px) { .product-cards { grid-template-columns: 1fr; } }
+
+  .product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.07);
+  }
+  .product-card-header {
+    padding: 18px 20px;
+    color: white;
+  }
+  .product-card.cloud .product-card-header { background: linear-gradient(135deg, #1c3f6e, #0176d3); }
+  .product-card.next .product-card-header { background: linear-gradient(135deg, #0ea7e0, #0176d3); }
+  .product-card-name { font-size: 17px; font-weight: 700; }
+  .product-card-tagline { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+
+  .product-section {
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0f2f5;
+  }
+  .product-section:last-child { border-bottom: none; }
+
+  .ps-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .product-card.cloud .ps-label { color: var(--sf-blue); }
+  .product-card.next .ps-label { color: var(--tab-teal); }
+
+  .product-section p {
+    font-size: 13px; line-height: 1.55; color: var(--gray-900);
+  }
+  .product-section ul {
+    list-style: none; padding: 0;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .product-section ul li {
+    font-size: 13px; line-height: 1.45;
+    padding-left: 14px; position: relative; color: var(--gray-900);
+  }
+  .product-card.cloud .product-section ul li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--sf-blue); font-size: 10px; top: 2px;
+  }
+  .product-card.next .product-section ul li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--tab-teal); font-size: 10px; top: 2px;
+  }
+  .buyer-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .buyer-note { margin-top: 8px; font-size: 12px; color: var(--gray-600); line-height: 1.4; }
+
+  /* ── Signals (new layout) ── */
+  .signals-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 4px;
+  }
+  @media (max-width: 580px) { .signals-cols { grid-template-columns: 1fr; } }
+
+  .signals-col h4 {
+    font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 10px; color: var(--gray-900);
+  }
+  .signals-col ul {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .signals-col ul li {
+    font-size: 12px; color: var(--gray-700);
+    padding: 7px 10px 7px 22px;
+    background: var(--gray-50);
+    border-radius: 6px;
+    position: relative; line-height: 1.4;
+  }
+  .signals-col ul li::before {
+    content: '"'; position: absolute; left: 8px;
+    color: var(--gray-300); font-size: 15px; top: 4px;
+  }
+
   .footer {
     text-align: center;
     padding: 24px 16px;
@@ -584,129 +673,127 @@
 
   <div class="section-header">
     <h2>Tableau Cloud vs Tableau Next</h2>
-    <p>Side-by-side reference — know the product, the buyer, and the pitch</p>
+    <p>Know the product, the buyer, and the pitch</p>
   </div>
 
-  <div class="compare-grid">
-    <!-- Column headers -->
-    <div class="col-header cloud">
-      <div class="product-name">Tableau Cloud</div>
-      <div class="product-tagline">Enterprise BI · SaaS · AI-Enhanced Analytics</div>
-    </div>
-    <div class="col-header next">
-      <div class="product-name">Tableau Next</div>
-      <div class="product-tagline">AI-First · Conversational · Salesforce-Native</div>
+  <div class="product-cards">
+
+    <div class="product-card cloud">
+      <div class="product-card-header">
+        <div class="product-card-name">Tableau Cloud</div>
+        <div class="product-card-tagline">Enterprise BI · SaaS · AI-Enhanced Analytics</div>
+      </div>
+      <div class="product-card-body">
+        <div class="product-section">
+          <div class="ps-label">What it is</div>
+          <p>The fully managed SaaS version of Tableau. Includes <strong>Tableau Agent</strong> — describe what you want, it builds the chart (Einstein Trust Layer) — and <strong>Pulse</strong> for proactive metric monitoring with AI explanations. No infrastructure to manage.</p>
+        </div>
+        <div class="product-section">
+          <div class="ps-label">Use cases</div>
+          <ul>
+            <li>Migrating from Tableau Server / on-prem</li>
+            <li>Enterprise dashboards and governed self-service BI</li>
+            <li>Centralized IT control over data and access</li>
+            <li>Pulse: metric alerts and AI-explained anomalies</li>
+            <li>Tableau Agent: build charts from plain-English descriptions</li>
+            <li>Complex multi-source data analysis</li>
+          </ul>
+        </div>
+        <div class="product-section">
+          <div class="ps-label">Who buys it</div>
+          <div class="buyer-chips">
+            <span class="chip cloud-chip">IT Director</span>
+            <span class="chip cloud-chip">Head of Analytics</span>
+            <span class="chip cloud-chip">BI Lead</span>
+            <span class="chip cloud-chip">CDO</span>
+            <span class="chip cloud-chip">CTO</span>
+          </div>
+          <p class="buyer-note">Centralized teams responsible for data governance, infrastructure, and analytics operations.</p>
+        </div>
+        <div class="product-section">
+          <div class="ps-label">Salesforce connection</div>
+          <ul>
+            <li>Part of the Salesforce portfolio — same AE motion</li>
+            <li>Native connector to Salesforce data</li>
+            <li>Governed analytics for data <em>outside</em> the CRM</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <!-- What it is -->
-    <div class="compare-row-label">What it is</div>
-    <div class="compare-cell cloud">
-      The fully managed, SaaS version of Tableau — the world's most trusted BI platform, now in the cloud. Includes <strong>Tableau Agent</strong> (describe what you want in plain English; it builds the chart and calculations for you — powered by the Einstein Trust Layer) and <strong>Pulse</strong> (proactive metric monitoring with AI-generated explanations). No infrastructure to manage.
-    </div>
-    <div class="compare-cell next">
-      The next generation of Tableau — an AI-powered, conversational analytics experience built natively on the Salesforce platform. Instead of building dashboards, users <em>ask questions</em> and get intelligent, context-aware answers powered by Einstein AI.
-    </div>
-
-    <!-- Use cases -->
-    <div class="compare-row-label">Use cases it solves</div>
-    <div class="compare-cell cloud">
-      <ul>
-        <li>Migrating from Tableau Server / on-prem</li>
-        <li>Enterprise-wide dashboards and reports</li>
-        <li>Self-service analytics for data-savvy users</li>
-        <li>Governed data with centralized IT control</li>
-        <li><strong>Pulse:</strong> proactive metric alerts &amp; AI-explained anomalies</li>
-        <li><strong>Tableau Agent:</strong> describe a chart in plain English, it builds it — powered by Einstein Trust Layer (requires Tableau+)</li>
-        <li>Complex multi-source data analysis</li>
-      </ul>
-    </div>
-    <div class="compare-cell next">
-      <ul>
-        <li>Natural language Q&A on business data</li>
-        <li>AI agents that proactively surface insights</li>
-        <li>Analytics embedded natively in Salesforce</li>
-        <li>Business users who find dashboards too slow</li>
-        <li>Conversational analytics for non-technical users</li>
-        <li>Einstein + Agentforce analytics workflows</li>
-      </ul>
-    </div>
-
-    <!-- Who's the buyer -->
-    <div class="compare-row-label">Who is the buyer</div>
-    <div class="compare-cell cloud">
-      <div style="margin-bottom:8px;"><strong>Primary:</strong></div>
-      <span class="chip cloud-chip">IT Director</span>
-      <span class="chip cloud-chip">Head of Analytics</span>
-      <span class="chip cloud-chip">BI Lead</span>
-      <span class="chip cloud-chip">CDO</span>
-      <div style="margin-top:10px; margin-bottom:8px;"><strong>Also involved:</strong></div>
-      <span class="chip cloud-chip">CTO</span>
-      <span class="chip cloud-chip">Procurement</span>
-      <div style="margin-top:10px; font-size:12px; color:var(--gray-600);">Centralized teams responsible for data governance, data infrastructure, and analytics operations.</div>
-    </div>
-    <div class="compare-cell next">
-      <div style="margin-bottom:8px;"><strong>Primary:</strong></div>
-      <span class="chip next-chip">CRO</span>
-      <span class="chip next-chip">CMO</span>
-      <span class="chip next-chip">VP of Sales</span>
-      <span class="chip next-chip">COO</span>
-      <div style="margin-top:10px; margin-bottom:8px;"><strong>Also involved:</strong></div>
-      <span class="chip next-chip">Salesforce Admin</span>
-      <span class="chip next-chip">CIO</span>
-      <div style="margin-top:10px; font-size:12px; color:var(--gray-600);">Business leaders and Salesforce-first buyers who want faster answers — not a BI build project.</div>
+    <div class="product-card next">
+      <div class="product-card-header">
+        <div class="product-card-name">Tableau Next</div>
+        <div class="product-card-tagline">AI-First · Conversational · Salesforce-Native</div>
+      </div>
+      <div class="product-card-body">
+        <div class="product-section">
+          <div class="ps-label">What it is</div>
+          <p>The next generation of Tableau — conversational AI analytics built natively on Salesforce. Users <em>ask questions</em> and get intelligent answers powered by Einstein AI. No dashboard required.</p>
+        </div>
+        <div class="product-section">
+          <div class="ps-label">Use cases</div>
+          <ul>
+            <li>Natural language Q&amp;A on business data</li>
+            <li>AI agents that proactively surface insights</li>
+            <li>Analytics embedded natively inside Salesforce</li>
+            <li>Business users who find dashboards too slow or complex</li>
+            <li>Einstein + Agentforce analytics workflows</li>
+            <li>Conversational analytics for non-technical users</li>
+          </ul>
+        </div>
+        <div class="product-section">
+          <div class="ps-label">Who buys it</div>
+          <div class="buyer-chips">
+            <span class="chip next-chip">CRO</span>
+            <span class="chip next-chip">CMO</span>
+            <span class="chip next-chip">VP of Sales</span>
+            <span class="chip next-chip">COO</span>
+            <span class="chip next-chip">Salesforce Admin</span>
+          </div>
+          <p class="buyer-note">Business leaders and Salesforce-first buyers who want faster answers — not a BI build project.</p>
+        </div>
+        <div class="product-section">
+          <div class="ps-label">Salesforce connection</div>
+          <ul>
+            <li><strong>Built on Salesforce</strong> — not just connected to it</li>
+            <li>Embedded inside Salesforce orgs and flows</li>
+            <li>Powered by Einstein AI — shares the same data layer</li>
+            <li>Works with Agentforce for autonomous analytics actions</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <!-- Salesforce connection -->
-    <div class="compare-row-label">How it connects to Salesforce</div>
-    <div class="compare-cell cloud">
-      <ul>
-        <li>Part of the Salesforce portfolio — sold through the same AE motion</li>
-        <li>Connects to Salesforce data via native connector</li>
-        <li>Packaged in <strong>Tableau+</strong> alongside Tableau Next</li>
-        <li>Complements Salesforce: governed analytics for data that lives <em>outside</em> the CRM</li>
-      </ul>
-    </div>
-    <div class="compare-cell next">
-      <ul>
-        <li><strong>Built on Salesforce platform</strong> — not just connected to it</li>
-        <li>Embedded directly inside Salesforce orgs and flows</li>
-        <li>Powered by Einstein AI — shares the same data layer</li>
-        <li>Works naturally with Agentforce for autonomous analytics actions</li>
-        <li>Packaged in <strong>Tableau+</strong> alongside Tableau Cloud</li>
-      </ul>
-    </div>
   </div>
 
-
-  <!-- Listening signals -->
-  <div class="section-header" style="margin-top:28px;">
+  <div class="section-header">
     <h2>Field Listening Signals</h2>
-    <p>If you hear these phrases, here's how to route the conversation</p>
+    <p>If you hear these phrases, here's how to route</p>
   </div>
 
-  <div class="signals-grid">
-    <div class="signal-card cloud">
-      <h4><span class="dot cloud"></span> Tableau Cloud signals</h4>
+  <div class="signals-cols">
+    <div class="signals-col">
+      <h4><span class="dot cloud"></span> Tableau Cloud</h4>
       <ul>
-        <li>We're running Tableau Server on-prem and want to move to cloud</li>
-        <li>We need IT to stop managing infrastructure for analytics</li>
-        <li>Our BI team needs a governed platform for the enterprise</li>
-        <li>Can we get alerts when our key metrics move unexpectedly?</li>
-        <li>Can I describe a chart I want and have it build it for me?</li>
-        <li>We want AI that works inside our existing Tableau environment</li>
-        <li>We need SOC 2 / security compliance for our analytics platform</li>
-        <li>We want Tableau — just not the server management</li>
+        <li>We're on Tableau Server and want to move to cloud</li>
+        <li>We need IT out of managing analytics infrastructure</li>
+        <li>Our BI team needs a governed enterprise platform</li>
+        <li>Can we get alerts when key metrics move unexpectedly?</li>
+        <li>Can I describe a chart and have it build it for me?</li>
+        <li>We want AI inside our existing Tableau environment</li>
+        <li>We need SOC 2 compliance for our analytics platform</li>
       </ul>
     </div>
-    <div class="signal-card next">
-      <h4><span class="dot next"></span> Tableau Next signals</h4>
+    <div class="signals-col">
+      <h4><span class="dot next"></span> Tableau Next</h4>
       <ul>
         <li>I just want to ask my data a question and get an answer</li>
-        <li>Our sales reps don't use dashboards — it's too complicated</li>
+        <li>Our reps don't use dashboards — too complicated</li>
         <li>Can this work with Einstein or Agentforce?</li>
-        <li>We want analytics right inside Salesforce, not another tool</li>
-        <li>Our executives want a way to query data without the BI team</li>
-        <li>We're interested in AI agents that surface insights proactively</li>
+        <li>We want analytics right inside Salesforce</li>
+        <li>Execs want insights without going through the BI team</li>
+        <li>We want AI agents that surface insights proactively</li>
       </ul>
     </div>
   </div>
