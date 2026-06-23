@@ -595,6 +595,26 @@
     </div>
   </div>
 
+  <!-- Q_sf_core - Salesforce prerequisite gate -->
+  <div class="question-card" id="q_sf_core">
+    <div class="q-label">Before we go further</div>
+    <div class="q-text">Does this customer have an active Sales Cloud or Service Cloud subscription?</div>
+    <div class="q-options">
+      <div class="q-option" onclick="selectOption(this,'q_sf_core','yes')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Yes — they're an existing Salesforce customer
+          <em>Sales Cloud, Service Cloud, or another core CRM product is live</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q_sf_core','no')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">No — they don't have Salesforce core
+          <em>Or it's unclear / not confirmed</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Result: Tableau Cloud -->
   <div class="result-card cloud" id="result-cloud">
     <div class="result-header">
@@ -826,6 +846,7 @@
     salesforce_enterprise: 'Customer wants Salesforce-connected analytics but has multi-source data needs. Start with Tableau+: Tableau Cloud handles the governed multi-source layer, Tableau Next handles the Salesforce-native piece.',
     q3_crm: 'After profiling the buyer, this is primarily about Salesforce/CRM data — that\'s the Tableau Next sweet spot.',
     q3_enterprise: 'The data scope goes beyond Salesforce into multi-source enterprise data — Tableau Cloud\'s governed BI capability is the right anchor, with Tableau Next as an AI add-on via Tableau+.',
+    no_sf_core: 'Tableau Next requires an active Salesforce core product (Sales Cloud or Service Cloud) — this customer doesn\'t have one. Focus on Tableau Cloud for now. If there\'s a Salesforce platform opportunity, flag it to the right AE or loop in your manager.',
   };
 
   function selectOption(el, questionId, value) {
@@ -853,6 +874,11 @@
       if (v === 'ai_agents') return showResult('next', SIGNALS.ai_agents);
     }
 
+    if (q === 'q_sf_core') {
+      if (v === 'yes') { state.sf_core_confirmed = true; return showResult('next', state.pendingNextSignal); }
+      if (v === 'no') return showResult('cloud', SIGNALS.no_sf_core);
+    }
+
     if (q === 'q2') {
       if (v === 'it') return showResult('cloud', SIGNALS.bi_it);
       if (v === 'business') return showResult('cloud', SIGNALS.bi_business);
@@ -877,6 +903,10 @@
   }
 
   function showResult(type, signal) {
+    if (type === 'next' && !state.sf_core_confirmed) {
+      state.pendingNextSignal = signal;
+      return showQ('q_sf_core');
+    }
     const resultEl = document.getElementById('result-' + type);
     document.getElementById(type === 'cloud' ? 'cloud-signal' : 'next-signal').textContent = signal;
     resultEl.classList.add('visible');
@@ -888,7 +918,9 @@
     Object.keys(state).forEach(k => delete state[k]);
 
     // Hide Q2, Q3
-    ['q2','q3','q_ai'].forEach(id => document.getElementById(id).classList.remove('visible'));
+    ['q2','q3','q_ai','q_sf_core'].forEach(id => document.getElementById(id).classList.remove('visible'));
+    state.sf_core_confirmed = false;
+    state.pendingNextSignal = null;
 
     // Clear selections
     document.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
