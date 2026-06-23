@@ -620,7 +620,7 @@
     <div class="result-header">
       <div class="result-tag">Recommendation</div>
       <div class="result-title">This is a Tableau Cloud conversation</div>
-      <div class="result-subtitle">You can lead this — no SE needed to qualify</div>
+      <div class="result-subtitle">Do additional discovery and pull in your Tableau rep or SE</div>
     </div>
     <div class="result-body">
       <div class="signal-box">
@@ -654,7 +654,7 @@
     <div class="result-header">
       <div class="result-tag">Recommendation</div>
       <div class="result-title">This sounds like Tableau Next — pull in your SE</div>
-      <div class="result-subtitle">This conversation has AI/next-gen signals that need an SE to progress</div>
+      <div class="result-subtitle">Do additional discovery and pull in your Tableau rep or SE</div>
     </div>
     <div class="result-body">
       <div class="signal-box">
@@ -849,14 +849,35 @@
     no_sf_core: 'Tableau Next requires an active Salesforce core product (Sales Cloud or Service Cloud) — this customer doesn\'t have one. Focus on Tableau Cloud for now. If there\'s a Salesforce platform opportunity, flag it to the right AE or loop in your manager.',
   };
 
+  const DOWNSTREAM = {
+    q1:       ['q_ai', 'q2', 'q3', 'q_sf_core'],
+    q_ai:     ['q_sf_core'],
+    q2:       ['q3', 'q_sf_core'],
+    q3:       ['q_sf_core'],
+    q_sf_core: [],
+  };
+
   function selectOption(el, questionId, value) {
-    // Highlight selection
     el.closest('.q-options').querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
-
     state[questionId] = value;
 
-    // Branch logic
+    // Hide all downstream questions and clear their selections
+    (DOWNSTREAM[questionId] || []).forEach(id => {
+      const node = document.getElementById(id);
+      if (!node) return;
+      node.classList.remove('visible');
+      node.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
+      delete state[id];
+    });
+
+    // Always hide results and reset SF gate when re-answering
+    document.querySelectorAll('.result-card').forEach(r => r.classList.remove('visible'));
+    if (questionId !== 'q_sf_core') {
+      state.sf_core_confirmed = false;
+      state.pendingNextSignal = null;
+    }
+
     setTimeout(() => advance(questionId, value), 300);
   }
 
