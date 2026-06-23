@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau Cloud vs Tableau Next — Rep Guide</title>
+<style>
+  :root {
+    --sf-blue: #0176d3;
+    --sf-blue-dark: #014486;
+    --sf-blue-light: #e8f4fd;
+    --tab-navy: #1c3f6e;
+    --tab-teal: #0ea7e0;
+    --tab-teal-light: #e5f6fc;
+    --white: #ffffff;
+    --gray-50: #f4f6f9;
+    --gray-100: #e5e9ef;
+    --gray-300: #b0bec5;
+    --gray-600: #546e7a;
+    --gray-900: #1a2533;
+    --green: #2e7d32;
+    --green-light: #e8f5e9;
+    --orange: #e65100;
+    --orange-light: #fff3e0;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.09);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, var(--tab-navy) 0%, var(--sf-blue-dark) 100%);
+    color: white;
+    padding: 18px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .header-logo {
+    width: 36px; height: 36px;
+    background: white;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .header-logo svg { width: 24px; height: 24px; }
+  .header-text h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
+  .header-text p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+
+  /* ── Tabs ── */
+  .tab-bar {
+    display: flex;
+    background: var(--tab-navy);
+    padding: 0 16px;
+    gap: 4px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .tab-btn {
+    padding: 11px 20px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: rgba(255,255,255,0.9); }
+  .tab-btn.active {
+    color: white;
+    border-bottom-color: var(--tab-teal);
+  }
+
+  /* ── Content panels ── */
+  .panel { display: none; padding: 24px 16px; max-width: 760px; margin: 0 auto; }
+  .panel.active { display: block; }
+
+  /* ── Qualifier flow ── */
+  .qualifier-intro {
+    background: var(--sf-blue-light);
+    border-left: 4px solid var(--sf-blue);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .qualifier-intro strong { color: var(--sf-blue-dark); }
+
+  .question-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .question-card.visible { display: block; }
+
+  .q-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--tab-teal);
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: 16px; font-weight: 600; color: var(--gray-900);
+    line-height: 1.4; margin-bottom: 16px;
+  }
+  .q-options { display: flex; flex-direction: column; gap: 10px; }
+  .q-option {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px;
+    border: 2px solid var(--gray-100);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--gray-50);
+  }
+  .q-option:hover {
+    border-color: var(--sf-blue);
+    background: var(--sf-blue-light);
+  }
+  .q-option.selected {
+    border-color: var(--sf-blue);
+    background: var(--sf-blue-light);
+  }
+  .q-option-radio {
+    width: 18px; height: 18px; min-width: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--gray-300);
+    margin-top: 1px;
+    transition: all 0.15s;
+    background: white;
+  }
+  .q-option.selected .q-option-radio {
+    border-color: var(--sf-blue);
+    background: var(--sf-blue);
+    box-shadow: inset 0 0 0 3px white;
+  }
+  .q-option-text { font-size: 14px; line-height: 1.45; color: var(--gray-900); }
+  .q-option-text em { display: block; font-size: 12px; color: var(--gray-600); font-style: normal; margin-top: 2px; }
+
+  /* ── Result card ── */
+  .result-card {
+    display: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .result-card.visible { display: block; }
+  .result-card.cloud .result-header { background: linear-gradient(135deg, #1c3f6e, #0176d3); }
+  .result-card.next .result-header { background: linear-gradient(135deg, #0ea7e0, #0176d3); }
+
+  .result-header {
+    color: white;
+    padding: 20px;
+  }
+  .result-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; opacity: 0.8; margin-bottom: 6px;
+  }
+  .result-title { font-size: 20px; font-weight: 700; line-height: 1.3; }
+  .result-subtitle { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+
+  .result-body { background: white; padding: 20px; }
+  .signal-box {
+    background: var(--orange-light);
+    border-left: 4px solid var(--orange);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .signal-box strong { color: var(--orange); }
+
+  .next-steps-title {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.6px;
+    text-transform: uppercase; color: var(--gray-600);
+    margin-bottom: 10px;
+  }
+  .next-steps-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .next-steps-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; line-height: 1.5;
+  }
+  .step-icon {
+    width: 20px; height: 20px; min-width: 20px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: white;
+    margin-top: 1px;
+  }
+  .step-icon.blue { background: var(--sf-blue); }
+  .step-icon.teal { background: var(--tab-teal); }
+
+  .restart-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 18px;
+    padding: 10px 18px;
+    background: var(--gray-50);
+    border: 2px solid var(--gray-100);
+    border-radius: 8px;
+    font-size: 13px; font-weight: 600; color: var(--gray-600);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .restart-btn:hover { border-color: var(--sf-blue); color: var(--sf-blue); background: var(--sf-blue-light); }
+
+  /* ── Cheat Sheet ── */
+  .section-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .section-header h2 { font-size: 20px; font-weight: 700; color: var(--tab-navy); }
+  .section-header p { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 540px) { .compare-grid { grid-template-columns: 1fr; } }
+
+  .col-header {
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 16px;
+    color: white;
+    text-align: center;
+  }
+  .col-header.cloud { background: linear-gradient(135deg, #1c3f6e, #0176d3); }
+  .col-header.next { background: linear-gradient(135deg, #0ea7e0, #0176d3); }
+  .col-header .product-name { font-size: 17px; font-weight: 700; }
+  .col-header .product-tagline { font-size: 12px; opacity: 0.8; margin-top: 3px; }
+
+  .compare-section {
+    display: contents;
+  }
+  .compare-row-label {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 10px;
+    margin: 18px 0 8px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.7px;
+    text-transform: uppercase; color: var(--gray-600);
+  }
+  .compare-row-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--gray-100);
+  }
+
+  .compare-cell {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--gray-900);
+  }
+  .compare-cell.cloud { border-top: 3px solid var(--tab-navy); }
+  .compare-cell.next { border-top: 3px solid var(--tab-teal); }
+  .compare-cell ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+  .compare-cell ul li {
+    padding-left: 16px;
+    position: relative;
+  }
+  .compare-cell.cloud ul li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--sf-blue); font-size: 11px; top: 1px;
+  }
+  .compare-cell.next ul li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--tab-teal); font-size: 11px; top: 1px;
+  }
+  .compare-cell .chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+    margin-right: 4px; margin-bottom: 4px;
+  }
+  .chip.cloud-chip { background: var(--sf-blue-light); color: var(--sf-blue-dark); }
+  .chip.next-chip { background: var(--tab-teal-light); color: #005f8a; }
+
+  /* ── Tableau+ callout ── */
+  .plus-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-top: 8px;
+    border-top: 4px solid var(--tab-teal);
+    grid-column: 1 / -1;
+  }
+  .plus-card h3 {
+    font-size: 16px; font-weight: 700; color: var(--tab-navy);
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .plus-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--tab-teal), var(--sf-blue));
+    color: white;
+    font-size: 12px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .plus-card p { font-size: 13px; line-height: 1.6; color: var(--gray-900); margin-bottom: 10px; }
+  .plus-pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .plus-pill {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    border: 1.5px solid var(--gray-100);
+    color: var(--gray-600);
+    background: var(--gray-50);
+  }
+
+  /* ── Key Signals ── */
+  .signals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  @media (max-width: 540px) { .signals-grid { grid-template-columns: 1fr; } }
+
+  .signal-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+  }
+  .signal-card.cloud { border-top: 3px solid var(--tab-navy); }
+  .signal-card.next { border-top: 3px solid var(--tab-teal); }
+  .signal-card h4 {
+    font-size: 13px; font-weight: 700; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.cloud { background: var(--tab-navy); }
+  .dot.next { background: var(--tab-teal); }
+  .signal-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .signal-card ul li {
+    font-size: 12px; color: var(--gray-600);
+    padding-left: 14px; position: relative; line-height: 1.4;
+  }
+  .signal-card ul li::before {
+    content: '"'; position: absolute; left: 0;
+    color: var(--gray-300); font-size: 14px; top: -1px;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 24px 16px;
+    font-size: 11px;
+    color: var(--gray-300);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="11" y="2" width="2" height="5" rx="1" fill="#0176d3"/>
+      <rect x="11" y="17" width="2" height="5" rx="1" fill="#0176d3"/>
+      <rect x="2" y="11" width="5" height="2" rx="1" fill="#0ea7e0"/>
+      <rect x="17" y="11" width="5" height="2" rx="1" fill="#0ea7e0"/>
+      <rect x="5.05" y="5.05" width="3.5" height="2" rx="1" transform="rotate(45 5.05 5.05)" fill="#1c3f6e"/>
+      <rect x="15.45" y="15.45" width="3.5" height="2" rx="1" transform="rotate(45 15.45 15.45)" fill="#1c3f6e"/>
+      <rect x="5.05" y="18.95" width="3.5" height="2" rx="1" transform="rotate(-45 5.05 18.95)" fill="#1c3f6e"/>
+      <rect x="15.45" y="8.55" width="3.5" height="2" rx="1" transform="rotate(-45 15.45 8.55)" fill="#1c3f6e"/>
+      <circle cx="12" cy="12" r="2.5" fill="#0176d3"/>
+    </svg>
+  </div>
+  <div class="header-text">
+    <h1>Tableau Cloud vs Tableau Next</h1>
+    <p>Quick reference for Account Executives — know which conversation you're in</p>
+  </div>
+</header>
+
+<nav class="tab-bar">
+  <button class="tab-btn active" onclick="showPanel('qualifier')">Qualifier Flow</button>
+  <button class="tab-btn" onclick="showPanel('cheatsheet')">Cheat Sheet</button>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     QUALIFIER PANEL
+════════════════════════════════════════════ -->
+<div id="panel-qualifier" class="panel active">
+
+  <div class="qualifier-intro">
+    <strong>How to use:</strong> Answer the questions below based on what you're hearing in the customer conversation. You'll get a clear recommendation and the signal that triggered it.
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card visible" id="q1">
+    <div class="q-label">Question 1 of 3</div>
+    <div class="q-text">What's the primary thing this customer is asking about?</div>
+    <div class="q-options">
+      <div class="q-option" onclick="selectOption(this,'q1','migrate')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Moving off Tableau Server or Desktop to a cloud-hosted solution
+          <em>e.g. "We want to get out of managing our own infrastructure"</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q1','bi')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Enterprise dashboards, governed BI, or self-service analytics
+          <em>e.g. "Our BI team needs a platform for the whole org"</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q1','ai')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">AI-powered analytics, natural language questions, or intelligent agents
+          <em>e.g. "I want to just ask my data a question" or "can it work with Einstein?"</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q1','salesforce')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Analytics directly inside Salesforce or on Salesforce data
+          <em>e.g. "We live in Salesforce — we want insights right there"</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2">
+    <div class="q-label">Question 2 of 3</div>
+    <div class="q-text">Who is the main stakeholder driving this conversation?</div>
+    <div class="q-options">
+      <div class="q-option" onclick="selectOption(this,'q2','it')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">IT, BI team, Analytics team, or a Center of Excellence
+          <em>Centralized team responsible for data governance and reporting</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q2','business')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Business leaders or end users who want easier access to insights
+          <em>e.g. VP of Sales, CMO, or frontline users saying "it's too hard to get to data"</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q2','sfadmin')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Salesforce admin or Salesforce-first team
+          <em>Person managing the Salesforce org is the primary contact</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3">
+    <div class="q-label">Question 3 of 3</div>
+    <div class="q-text">Is this primarily about Salesforce CRM data, or data across the broader enterprise?</div>
+    <div class="q-options">
+      <div class="q-option" onclick="selectOption(this,'q3','crm')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Mainly Salesforce / CRM data (Sales Cloud, Service Cloud, etc.)
+          <em>Their analytics needs start and end inside the Salesforce ecosystem</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q3','enterprise')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Multi-source: data warehouse, ERP, marketing, finance, etc.
+          <em>They have data beyond Salesforce that needs to be analyzed and governed</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result: Tableau Cloud -->
+  <div class="result-card cloud" id="result-cloud">
+    <div class="result-header">
+      <div class="result-tag">Recommendation</div>
+      <div class="result-title">This is a Tableau Cloud conversation</div>
+      <div class="result-subtitle">You can lead this — no SE needed to qualify</div>
+    </div>
+    <div class="result-body">
+      <div class="signal-box">
+        <strong>Signal that triggered this:</strong> <span id="cloud-signal"></span>
+      </div>
+      <div class="next-steps-title">Suggested next steps</div>
+      <ul class="next-steps-list">
+        <li>
+          <div class="step-icon blue">1</div>
+          Confirm their current Tableau footprint (how many users, which products, contract timing).
+        </li>
+        <li>
+          <div class="step-icon blue">2</div>
+          Position Tableau Cloud as the natural landing spot — managed SaaS, same experience, no infra burden.
+        </li>
+        <li>
+          <div class="step-icon blue">3</div>
+          Mention Tableau+ if they're also showing interest in AI or Salesforce-native analytics.
+        </li>
+        <li>
+          <div class="step-icon blue">4</div>
+          Loop in your SE when it's time to scope the migration or size the deployment.
+        </li>
+      </ul>
+      <button class="restart-btn" onclick="restartQuiz()">↩ Start over</button>
+    </div>
+  </div>
+
+  <!-- Result: Tableau Next -->
+  <div class="result-card next" id="result-next">
+    <div class="result-header">
+      <div class="result-tag">Recommendation</div>
+      <div class="result-title">This sounds like Tableau Next — pull in your SE</div>
+      <div class="result-subtitle">This conversation has AI/next-gen signals that need an SE to progress</div>
+    </div>
+    <div class="result-body">
+      <div class="signal-box">
+        <strong>Signal that triggered this:</strong> <span id="next-signal"></span>
+      </div>
+      <div class="next-steps-title">Suggested next steps</div>
+      <ul class="next-steps-list">
+        <li>
+          <div class="step-icon teal">1</div>
+          Validate you're talking to the right person — Tableau Next buyers are often business leaders, not just IT.
+        </li>
+        <li>
+          <div class="step-icon teal">2</div>
+          Use discovery language: <em>"Tell me about how your team gets answers from data today."</em>
+        </li>
+        <li>
+          <div class="step-icon teal">3</div>
+          Set up a Tableau Next demo with your SE — the visual experience closes these faster than a slide deck.
+        </li>
+        <li>
+          <div class="step-icon teal">4</div>
+          Ask about their Einstein/Agentforce relationship — Tableau Next is an accelerant to those conversations.
+        </li>
+      </ul>
+      <button class="restart-btn" onclick="restartQuiz()">↩ Start over</button>
+    </div>
+  </div>
+
+</div><!-- /qualifier panel -->
+
+
+<!-- ════════════════════════════════════════════
+     CHEAT SHEET PANEL
+════════════════════════════════════════════ -->
+<div id="panel-cheatsheet" class="panel">
+
+  <div class="section-header">
+    <h2>Tableau Cloud vs Tableau Next</h2>
+    <p>Side-by-side reference — know the product, the buyer, and the pitch</p>
+  </div>
+
+  <div class="compare-grid">
+    <!-- Column headers -->
+    <div class="col-header cloud">
+      <div class="product-name">Tableau Cloud</div>
+      <div class="product-tagline">Enterprise BI · SaaS · Governed Analytics</div>
+    </div>
+    <div class="col-header next">
+      <div class="product-name">Tableau Next</div>
+      <div class="product-tagline">AI-First · Conversational · Salesforce-Native</div>
+    </div>
+
+    <!-- What it is -->
+    <div class="compare-row-label">What it is</div>
+    <div class="compare-cell cloud">
+      The fully managed, SaaS version of Tableau — the world's most trusted BI platform, now in the cloud with no infrastructure for customers to manage. Think: every Tableau capability your data teams love, delivered as a service.
+    </div>
+    <div class="compare-cell next">
+      The next generation of Tableau — an AI-powered, conversational analytics experience built natively on the Salesforce platform. Instead of building dashboards, users <em>ask questions</em> and get intelligent, context-aware answers powered by Einstein AI.
+    </div>
+
+    <!-- Use cases -->
+    <div class="compare-row-label">Use cases it solves</div>
+    <div class="compare-cell cloud">
+      <ul>
+        <li>Migrating from Tableau Server / on-prem</li>
+        <li>Enterprise-wide dashboards and reports</li>
+        <li>Self-service analytics for data-savvy users</li>
+        <li>Governed data with centralized IT control</li>
+        <li>Complex multi-source data analysis</li>
+        <li>Embedding analytics in internal portals</li>
+      </ul>
+    </div>
+    <div class="compare-cell next">
+      <ul>
+        <li>Natural language Q&A on business data</li>
+        <li>AI agents that proactively surface insights</li>
+        <li>Analytics embedded natively in Salesforce</li>
+        <li>Business users who find dashboards too slow</li>
+        <li>Conversational analytics for non-technical users</li>
+        <li>Einstein + Agentforce analytics workflows</li>
+      </ul>
+    </div>
+
+    <!-- Who's the buyer -->
+    <div class="compare-row-label">Who is the buyer</div>
+    <div class="compare-cell cloud">
+      <div style="margin-bottom:8px;"><strong>Primary:</strong></div>
+      <span class="chip cloud-chip">IT Director</span>
+      <span class="chip cloud-chip">Head of Analytics</span>
+      <span class="chip cloud-chip">BI Lead</span>
+      <span class="chip cloud-chip">CDO</span>
+      <div style="margin-top:10px; margin-bottom:8px;"><strong>Also involved:</strong></div>
+      <span class="chip cloud-chip">CTO</span>
+      <span class="chip cloud-chip">Procurement</span>
+      <div style="margin-top:10px; font-size:12px; color:var(--gray-600);">Centralized teams responsible for data governance, data infrastructure, and analytics operations.</div>
+    </div>
+    <div class="compare-cell next">
+      <div style="margin-bottom:8px;"><strong>Primary:</strong></div>
+      <span class="chip next-chip">CRO</span>
+      <span class="chip next-chip">CMO</span>
+      <span class="chip next-chip">VP of Sales</span>
+      <span class="chip next-chip">COO</span>
+      <div style="margin-top:10px; margin-bottom:8px;"><strong>Also involved:</strong></div>
+      <span class="chip next-chip">Salesforce Admin</span>
+      <span class="chip next-chip">CIO</span>
+      <div style="margin-top:10px; font-size:12px; color:var(--gray-600);">Business leaders and Salesforce-first buyers who want faster answers — not a BI build project.</div>
+    </div>
+
+    <!-- Salesforce connection -->
+    <div class="compare-row-label">How it connects to Salesforce</div>
+    <div class="compare-cell cloud">
+      <ul>
+        <li>Part of the Salesforce portfolio — sold through the same AE motion</li>
+        <li>Connects to Salesforce data via native connector</li>
+        <li>Packaged in <strong>Tableau+</strong> alongside Tableau Next</li>
+        <li>Complements Salesforce: governed analytics for data that lives <em>outside</em> the CRM</li>
+      </ul>
+    </div>
+    <div class="compare-cell next">
+      <ul>
+        <li><strong>Built on Salesforce platform</strong> — not just connected to it</li>
+        <li>Embedded directly inside Salesforce orgs and flows</li>
+        <li>Powered by Einstein AI — shares the same data layer</li>
+        <li>Works naturally with Agentforce for autonomous analytics actions</li>
+        <li>Packaged in <strong>Tableau+</strong> alongside Tableau Cloud</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tableau+ callout -->
+  <div class="compare-grid">
+    <div class="plus-card">
+      <h3><span class="plus-badge">Tableau+</span> What is Tableau+?</h3>
+      <p>
+        <strong>Tableau+</strong> is the bundle that gives customers both Tableau Cloud <em>and</em> Tableau Next under one license. It's the recommended motion for most net-new deals because it covers the full spectrum: governed enterprise BI for the data team, and AI-powered conversational analytics for business users — all within the Salesforce ecosystem.
+      </p>
+      <p>
+        Think of it this way: Tableau Cloud handles the <em>infrastructure</em> problem (SaaS, governed, scalable), and Tableau Next handles the <em>access</em> problem (AI, natural language, anyone in the business can get answers). Tableau+ is the answer when the customer needs both.
+      </p>
+      <div class="plus-pill-row">
+        <span class="plus-pill">Tableau Cloud included</span>
+        <span class="plus-pill">Tableau Next included</span>
+        <span class="plus-pill">Einstein AI-powered</span>
+        <span class="plus-pill">Single contract</span>
+        <span class="plus-pill">Best for net-new logos</span>
+        <span class="plus-pill">Full analytics platform</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Listening signals -->
+  <div class="section-header" style="margin-top:28px;">
+    <h2>Field Listening Signals</h2>
+    <p>If you hear these phrases, here's how to route the conversation</p>
+  </div>
+
+  <div class="signals-grid">
+    <div class="signal-card cloud">
+      <h4><span class="dot cloud"></span> Tableau Cloud signals</h4>
+      <ul>
+        <li>We're running Tableau Server on-prem and want to move to cloud</li>
+        <li>We need IT to stop managing infrastructure for analytics</li>
+        <li>Our BI team needs a governed platform for the enterprise</li>
+        <li>We have 500 users who need dashboards and self-service analytics</li>
+        <li>We need SOC 2 / security compliance for our analytics platform</li>
+        <li>We want Tableau — just not the server management</li>
+      </ul>
+    </div>
+    <div class="signal-card next">
+      <h4><span class="dot next"></span> Tableau Next signals</h4>
+      <ul>
+        <li>I just want to ask my data a question and get an answer</li>
+        <li>Our sales reps don't use dashboards — it's too complicated</li>
+        <li>Can this work with Einstein or Agentforce?</li>
+        <li>We want analytics right inside Salesforce, not another tool</li>
+        <li>Our executives want a way to query data without the BI team</li>
+        <li>We're interested in AI agents that surface insights proactively</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /cheatsheet panel -->
+
+<div class="footer">For internal use only · Salesforce Tableau Sales Enablement</div>
+
+<script>
+  // ── Tab switching ──
+  function showPanel(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // ── Qualifier logic ──
+  const state = {};
+
+  const SIGNALS = {
+    migrate: 'Customer mentioned migrating from Tableau Server or on-prem infrastructure — this is a classic Tableau Cloud migration conversation.',
+    bi_it: 'Customer\'s primary driver is governed enterprise BI with an IT/Analytics team as the stakeholder — core Tableau Cloud territory.',
+    bi_business: 'Business users or leaders want easier access to insights. This can start as a Tableau Cloud conversation, but the "easier access" angle may evolve into Tableau Next. Qualify further.',
+    bi_sfadmin: 'Salesforce admin is the primary driver — this leans toward Tableau Next since the customer is Salesforce-first.',
+    ai: 'Customer explicitly mentioned AI-powered analytics, natural language queries, or intelligent agents — clear Tableau Next signal.',
+    salesforce_crm: 'Customer wants analytics inside Salesforce on CRM data. This is a strong Tableau Next signal — it\'s built for exactly this use case.',
+    salesforce_enterprise: 'Customer wants Salesforce-connected analytics but has multi-source data needs. Start with Tableau+: Tableau Cloud handles the governed multi-source layer, Tableau Next handles the Salesforce-native piece.',
+    q3_crm: 'After profiling the buyer, this is primarily about Salesforce/CRM data — that\'s the Tableau Next sweet spot.',
+    q3_enterprise: 'The data scope goes beyond Salesforce into multi-source enterprise data — Tableau Cloud\'s governed BI capability is the right anchor, with Tableau Next as an AI add-on via Tableau+.',
+  };
+
+  function selectOption(el, questionId, value) {
+    // Highlight selection
+    el.closest('.q-options').querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+
+    state[questionId] = value;
+
+    // Branch logic
+    setTimeout(() => advance(questionId, value), 300);
+  }
+
+  function advance(q, v) {
+    if (q === 'q1') {
+      if (v === 'migrate') return showResult('cloud', SIGNALS.migrate);
+      if (v === 'ai') return showResult('next', SIGNALS.ai);
+      if (v === 'salesforce') return showQ('q3'); // ask CRM vs enterprise
+      if (v === 'bi') return showQ('q2');
+    }
+
+    if (q === 'q2') {
+      if (v === 'it') return showResult('cloud', SIGNALS.bi_it);
+      if (v === 'business') return showResult('cloud', SIGNALS.bi_business);
+      if (v === 'sfadmin') return showQ('q3');
+    }
+
+    if (q === 'q3') {
+      if (state.q1 === 'salesforce') {
+        if (v === 'crm') return showResult('next', SIGNALS.salesforce_crm);
+        if (v === 'enterprise') return showResult('next', SIGNALS.salesforce_enterprise);
+      }
+      if (state.q1 === 'bi' && state.q2 === 'sfadmin') {
+        if (v === 'crm') return showResult('next', SIGNALS.q3_crm);
+        if (v === 'enterprise') return showResult('cloud', SIGNALS.q3_enterprise);
+      }
+    }
+  }
+
+  function showQ(id) {
+    document.getElementById(id).classList.add('visible');
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function showResult(type, signal) {
+    const resultEl = document.getElementById('result-' + type);
+    document.getElementById(type === 'cloud' ? 'cloud-signal' : 'next-signal').textContent = signal;
+    resultEl.classList.add('visible');
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function restartQuiz() {
+    // Reset state
+    Object.keys(state).forEach(k => delete state[k]);
+
+    // Hide Q2, Q3
+    ['q2','q3'].forEach(id => document.getElementById(id).classList.remove('visible'));
+
+    // Clear selections
+    document.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
+
+    // Hide results
+    document.querySelectorAll('.result-card').forEach(r => r.classList.remove('visible'));
+
+    // Scroll to top of panel
+    document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+</body>
+</html>
