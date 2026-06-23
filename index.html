@@ -441,8 +441,8 @@
     <div class="q-options">
       <div class="q-option" onclick="selectOption(this,'q_ai','ai_cloud')">
         <div class="q-option-radio"></div>
-        <div class="q-option-text">Proactive metric alerts, anomaly detection, or "explain why this number changed"
-          <em>e.g. "I want to know when my pipeline drops" or "can it surface what's driving the change?"</em>
+        <div class="q-option-text">AI help building charts/analysis, metric alerts, or "explain why this number changed" — within their existing data environment
+          <em>e.g. "Can it build a chart from a description?" or "I want alerts when my pipeline drops"</em>
         </div>
       </div>
       <div class="q-option" onclick="selectOption(this,'q_ai','ai_next')">
@@ -601,7 +601,7 @@
     <!-- What it is -->
     <div class="compare-row-label">What it is</div>
     <div class="compare-cell cloud">
-      The fully managed, SaaS version of Tableau — the world's most trusted BI platform, now in the cloud. Includes <strong>Pulse</strong> (proactive metric monitoring and AI-generated explanations), <strong>Ask Data / Einstein Q&A</strong> (natural language queries on governed data), and anomaly detection — all on top of the full enterprise BI platform your data teams rely on.
+      The fully managed, SaaS version of Tableau — the world's most trusted BI platform, now in the cloud. Includes <strong>Tableau Agent</strong> (describe what you want in plain English; it builds the chart and calculations for you — powered by the Einstein Trust Layer) and <strong>Pulse</strong> (proactive metric monitoring with AI-generated explanations). No infrastructure to manage.
     </div>
     <div class="compare-cell next">
       The next generation of Tableau — an AI-powered, conversational analytics experience built natively on the Salesforce platform. Instead of building dashboards, users <em>ask questions</em> and get intelligent, context-aware answers powered by Einstein AI.
@@ -616,7 +616,7 @@
         <li>Self-service analytics for data-savvy users</li>
         <li>Governed data with centralized IT control</li>
         <li><strong>Pulse:</strong> proactive metric alerts &amp; AI-explained anomalies</li>
-        <li><strong>Ask Data / Q&amp;A:</strong> natural language queries on governed data</li>
+        <li><strong>Tableau Agent:</strong> describe a chart in plain English, it builds it — powered by Einstein Trust Layer (requires Tableau+)</li>
         <li>Complex multi-source data analysis</li>
       </ul>
     </div>
@@ -712,7 +712,8 @@
         <li>We need IT to stop managing infrastructure for analytics</li>
         <li>Our BI team needs a governed platform for the enterprise</li>
         <li>Can we get alerts when our key metrics move unexpectedly?</li>
-        <li>We want AI to explain why our numbers changed</li>
+        <li>Can I describe a chart I want and have it build it for me?</li>
+        <li>We want AI that works inside our existing Tableau environment</li>
         <li>We need SOC 2 / security compliance for our analytics platform</li>
         <li>We want Tableau — just not the server management</li>
       </ul>
@@ -751,7 +752,7 @@
     bi_it: 'Customer\'s primary driver is governed enterprise BI with an IT/Analytics team as the stakeholder — core Tableau Cloud territory.',
     bi_business: 'Business users or leaders want easier access to insights. This can start as a Tableau Cloud conversation, but the "easier access" angle may evolve into Tableau Next. Qualify further.',
     bi_sfadmin: 'Salesforce admin is the primary driver — this leans toward Tableau Next since the customer is Salesforce-first.',
-    ai_cloud: 'Customer wants AI on top of governed analytics — Pulse metric monitoring, Einstein-powered anomaly detection, and Ask Data Q&A are all native to Tableau Cloud. No need to jump to Tableau Next for this.',
+    ai_cloud: 'Customer wants AI on top of governed analytics — Tableau Agent (natural language viz building, powered by Einstein Trust Layer) and Pulse (proactive metric monitoring) are both native to Tableau Cloud. No need to jump to Tableau Next for this. Note: Tableau Agent requires a Tableau+ license.',
     ai_next: 'Customer wants truly conversational, natural language analytics — the "ask anything" experience. That\'s Tableau Next, which is purpose-built for this. Pull in your SE for a demo.',
     ai_agents: 'Customer is asking about autonomous AI agents or Agentforce integration — that\'s a Tableau Next + Agentforce conversation. Needs an SE.',
     salesforce_crm: 'Customer wants analytics inside Salesforce on CRM data. This is a strong Tableau Next signal — it\'s built for exactly this use case.',
