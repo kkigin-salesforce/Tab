@@ -496,12 +496,6 @@
     <div class="q-label">Question 1 of 3</div>
     <div class="q-text">What's the primary thing this customer is asking about?</div>
     <div class="q-options">
-      <div class="q-option" onclick="selectOption(this,'q1','migrate')">
-        <div class="q-option-radio"></div>
-        <div class="q-option-text">Moving off Tableau Server or Desktop to a cloud-hosted solution
-          <em>e.g. "We want to get out of managing our own infrastructure"</em>
-        </div>
-      </div>
       <div class="q-option" onclick="selectOption(this,'q1','bi')">
         <div class="q-option-radio"></div>
         <div class="q-option-text">Enterprise dashboards, governed BI, or self-service analytics
@@ -634,7 +628,7 @@
         </li>
         <li>
           <div class="step-icon blue">2</div>
-          Position Tableau Cloud as the natural landing spot — managed SaaS, same experience, no infra burden.
+          Position Tableau Cloud as the right fit — governed enterprise BI, managed SaaS, built for data teams.
         </li>
         <li>
           <div class="step-icon blue">3</div>
@@ -642,7 +636,7 @@
         </li>
         <li>
           <div class="step-icon blue">4</div>
-          Loop in your SE when it's time to scope the migration or size the deployment.
+          Loop in your SE when it's time to scope and size the deployment.
         </li>
       </ul>
       <button class="restart-btn" onclick="restartQuiz()">↩ Start over</button>
@@ -706,12 +700,11 @@
       <div class="product-card-body">
         <div class="product-section">
           <div class="ps-label">What it is</div>
-          <p>The fully managed SaaS version of Tableau. Includes <strong>Tableau Agent</strong> — describe what you want, it builds the chart (Einstein Trust Layer) — and <strong>Pulse</strong> for proactive metric monitoring with AI explanations. No infrastructure to manage.</p>
+          <p>The fully managed SaaS version of Tableau. Includes <strong>Tableau Agent</strong> — describe what you want, it builds the chart (Einstein Trust Layer) — and <strong>Pulse</strong> for proactive metric monitoring with AI explanations.</p>
         </div>
         <div class="product-section">
           <div class="ps-label">Use cases</div>
           <ul>
-            <li>Migrating from Tableau Server / on-prem</li>
             <li>Enterprise dashboards and governed self-service BI</li>
             <li>Centralized IT control over data and access</li>
             <li>Pulse: metric alerts and AI-explained anomalies</li>
@@ -796,8 +789,6 @@
     <div class="signals-col">
       <h4><span class="dot cloud"></span> Tableau Cloud</h4>
       <ul>
-        <li>We're on Tableau Server and want to move to cloud</li>
-        <li>We need IT out of managing analytics infrastructure</li>
         <li>Our BI team needs a governed enterprise platform</li>
         <li>Can we get alerts when key metrics move unexpectedly?</li>
         <li>Can I describe a chart and have it build it for me?</li>
@@ -835,7 +826,6 @@
   const state = {};
 
   const SIGNALS = {
-    migrate: 'Customer mentioned migrating from Tableau Server or on-prem infrastructure — this is a classic Tableau Cloud migration conversation.',
     bi_it: 'Customer\'s primary driver is governed enterprise BI with an IT/Analytics team as the stakeholder — core Tableau Cloud territory.',
     bi_business: 'Business users or leaders want easier access to insights. This can start as a Tableau Cloud conversation, but the "easier access" angle may evolve into Tableau Next. Qualify further.',
     bi_sfadmin: 'Salesforce admin is the primary driver — this leans toward Tableau Next since the customer is Salesforce-first.',
@@ -883,7 +873,6 @@
 
   function advance(q, v) {
     if (q === 'q1') {
-      if (v === 'migrate') return showResult('cloud', SIGNALS.migrate);
       if (v === 'ai') return showQ('q_ai');
       if (v === 'salesforce') return showQ('q3'); // ask CRM vs enterprise
       if (v === 'bi') return showQ('q2');
