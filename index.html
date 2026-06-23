@@ -370,16 +370,16 @@
 
 <header>
   <div class="header-logo">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="11" y="2" width="2" height="5" rx="1" fill="#0176d3"/>
-      <rect x="11" y="17" width="2" height="5" rx="1" fill="#0176d3"/>
-      <rect x="2" y="11" width="5" height="2" rx="1" fill="#0ea7e0"/>
-      <rect x="17" y="11" width="5" height="2" rx="1" fill="#0ea7e0"/>
-      <rect x="5.05" y="5.05" width="3.5" height="2" rx="1" transform="rotate(45 5.05 5.05)" fill="#1c3f6e"/>
-      <rect x="15.45" y="15.45" width="3.5" height="2" rx="1" transform="rotate(45 15.45 15.45)" fill="#1c3f6e"/>
-      <rect x="5.05" y="18.95" width="3.5" height="2" rx="1" transform="rotate(-45 5.05 18.95)" fill="#1c3f6e"/>
-      <rect x="15.45" y="8.55" width="3.5" height="2" rx="1" transform="rotate(-45 15.45 8.55)" fill="#1c3f6e"/>
-      <circle cx="12" cy="12" r="2.5" fill="#0176d3"/>
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Flanking vertical bars -->
+      <rect x="4" y="7" width="3.5" height="14" rx="0.5" fill="#0176d3"/>
+      <rect x="20.5" y="7" width="3.5" height="14" rx="0.5" fill="#0176d3"/>
+      <!-- Flanking horizontal bars -->
+      <rect x="7" y="4" width="14" height="3.5" rx="0.5" fill="#0176d3"/>
+      <rect x="7" y="20.5" width="14" height="3.5" rx="0.5" fill="#0176d3"/>
+      <!-- Center cross (navy, on top) -->
+      <rect x="12.25" y="1" width="3.5" height="26" rx="0.5" fill="#1c3f6e"/>
+      <rect x="1" y="12.25" width="26" height="3.5" rx="0.5" fill="#1c3f6e"/>
     </svg>
   </div>
   <div class="header-text">
@@ -421,14 +421,40 @@
       </div>
       <div class="q-option" onclick="selectOption(this,'q1','ai')">
         <div class="q-option-radio"></div>
-        <div class="q-option-text">AI-powered analytics, natural language questions, or intelligent agents
-          <em>e.g. "I want to just ask my data a question" or "can it work with Einstein?"</em>
+        <div class="q-option-text">AI-powered analytics — alerts, Q&A, agents, or "just ask the data"
+          <em>e.g. "Can it flag when metrics change?" or "I want to ask questions in plain English"</em>
         </div>
       </div>
       <div class="q-option" onclick="selectOption(this,'q1','salesforce')">
         <div class="q-option-radio"></div>
         <div class="q-option-text">Analytics directly inside Salesforce or on Salesforce data
           <em>e.g. "We live in Salesforce — we want insights right there"</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q_ai - AI type follow-up -->
+  <div class="question-card" id="q_ai">
+    <div class="q-label">Follow-up question</div>
+    <div class="q-text">What kind of AI experience are they describing?</div>
+    <div class="q-options">
+      <div class="q-option" onclick="selectOption(this,'q_ai','ai_cloud')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Proactive metric alerts, anomaly detection, or "explain why this number changed"
+          <em>e.g. "I want to know when my pipeline drops" or "can it surface what's driving the change?"</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q_ai','ai_next')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Conversational Q&A — type a question, get a direct answer, like a data chatbot
+          <em>e.g. "I want to ask it questions in plain English without building a dashboard"</em>
+        </div>
+      </div>
+      <div class="q-option" onclick="selectOption(this,'q_ai','ai_agents')">
+        <div class="q-option-radio"></div>
+        <div class="q-option-text">Autonomous AI agents that surface insights or take action proactively
+          <em>e.g. "We're building with Agentforce" or "I want it to act on data without being asked"</em>
         </div>
       </div>
     </div>
@@ -565,7 +591,7 @@
     <!-- Column headers -->
     <div class="col-header cloud">
       <div class="product-name">Tableau Cloud</div>
-      <div class="product-tagline">Enterprise BI · SaaS · Governed Analytics</div>
+      <div class="product-tagline">Enterprise BI · SaaS · AI-Enhanced Analytics</div>
     </div>
     <div class="col-header next">
       <div class="product-name">Tableau Next</div>
@@ -575,7 +601,7 @@
     <!-- What it is -->
     <div class="compare-row-label">What it is</div>
     <div class="compare-cell cloud">
-      The fully managed, SaaS version of Tableau — the world's most trusted BI platform, now in the cloud with no infrastructure for customers to manage. Think: every Tableau capability your data teams love, delivered as a service.
+      The fully managed, SaaS version of Tableau — the world's most trusted BI platform, now in the cloud. Includes <strong>Pulse</strong> (proactive metric monitoring and AI-generated explanations), <strong>Ask Data / Einstein Q&A</strong> (natural language queries on governed data), and anomaly detection — all on top of the full enterprise BI platform your data teams rely on.
     </div>
     <div class="compare-cell next">
       The next generation of Tableau — an AI-powered, conversational analytics experience built natively on the Salesforce platform. Instead of building dashboards, users <em>ask questions</em> and get intelligent, context-aware answers powered by Einstein AI.
@@ -589,8 +615,9 @@
         <li>Enterprise-wide dashboards and reports</li>
         <li>Self-service analytics for data-savvy users</li>
         <li>Governed data with centralized IT control</li>
+        <li><strong>Pulse:</strong> proactive metric alerts &amp; AI-explained anomalies</li>
+        <li><strong>Ask Data / Q&amp;A:</strong> natural language queries on governed data</li>
         <li>Complex multi-source data analysis</li>
-        <li>Embedding analytics in internal portals</li>
       </ul>
     </div>
     <div class="compare-cell next">
@@ -684,7 +711,8 @@
         <li>We're running Tableau Server on-prem and want to move to cloud</li>
         <li>We need IT to stop managing infrastructure for analytics</li>
         <li>Our BI team needs a governed platform for the enterprise</li>
-        <li>We have 500 users who need dashboards and self-service analytics</li>
+        <li>Can we get alerts when our key metrics move unexpectedly?</li>
+        <li>We want AI to explain why our numbers changed</li>
         <li>We need SOC 2 / security compliance for our analytics platform</li>
         <li>We want Tableau — just not the server management</li>
       </ul>
@@ -723,7 +751,9 @@
     bi_it: 'Customer\'s primary driver is governed enterprise BI with an IT/Analytics team as the stakeholder — core Tableau Cloud territory.',
     bi_business: 'Business users or leaders want easier access to insights. This can start as a Tableau Cloud conversation, but the "easier access" angle may evolve into Tableau Next. Qualify further.',
     bi_sfadmin: 'Salesforce admin is the primary driver — this leans toward Tableau Next since the customer is Salesforce-first.',
-    ai: 'Customer explicitly mentioned AI-powered analytics, natural language queries, or intelligent agents — clear Tableau Next signal.',
+    ai_cloud: 'Customer wants AI on top of governed analytics — Pulse metric monitoring, Einstein-powered anomaly detection, and Ask Data Q&A are all native to Tableau Cloud. No need to jump to Tableau Next for this.',
+    ai_next: 'Customer wants truly conversational, natural language analytics — the "ask anything" experience. That\'s Tableau Next, which is purpose-built for this. Pull in your SE for a demo.',
+    ai_agents: 'Customer is asking about autonomous AI agents or Agentforce integration — that\'s a Tableau Next + Agentforce conversation. Needs an SE.',
     salesforce_crm: 'Customer wants analytics inside Salesforce on CRM data. This is a strong Tableau Next signal — it\'s built for exactly this use case.',
     salesforce_enterprise: 'Customer wants Salesforce-connected analytics but has multi-source data needs. Start with Tableau+: Tableau Cloud handles the governed multi-source layer, Tableau Next handles the Salesforce-native piece.',
     q3_crm: 'After profiling the buyer, this is primarily about Salesforce/CRM data — that\'s the Tableau Next sweet spot.',
@@ -744,9 +774,15 @@
   function advance(q, v) {
     if (q === 'q1') {
       if (v === 'migrate') return showResult('cloud', SIGNALS.migrate);
-      if (v === 'ai') return showResult('next', SIGNALS.ai);
+      if (v === 'ai') return showQ('q_ai');
       if (v === 'salesforce') return showQ('q3'); // ask CRM vs enterprise
       if (v === 'bi') return showQ('q2');
+    }
+
+    if (q === 'q_ai') {
+      if (v === 'ai_cloud') return showResult('cloud', SIGNALS.ai_cloud);
+      if (v === 'ai_next') return showResult('next', SIGNALS.ai_next);
+      if (v === 'ai_agents') return showResult('next', SIGNALS.ai_agents);
     }
 
     if (q === 'q2') {
@@ -784,7 +820,7 @@
     Object.keys(state).forEach(k => delete state[k]);
 
     // Hide Q2, Q3
-    ['q2','q3'].forEach(id => document.getElementById(id).classList.remove('visible'));
+    ['q2','q3','q_ai'].forEach(id => document.getElementById(id).classList.remove('visible'));
 
     // Clear selections
     document.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
